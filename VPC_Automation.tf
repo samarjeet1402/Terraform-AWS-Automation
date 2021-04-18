@@ -17,6 +17,7 @@ resource "aws_subnet" "test_tf_VPC_Subnet_2a" {
 tags = {
    Name = "My tf test VPC Subnet"
 }
+}
 resource "aws_subnet" "test_tf_VPC_Subnet_2b" {
   vpc_id                  = aws_vpc.test_tf_VPC.id
   cidr_block              = var.subnetCIDRblock_2b
