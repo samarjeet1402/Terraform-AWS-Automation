@@ -9,20 +9,11 @@ tags = {
 }
 } # end resource
 # create the Subnet
-resource "aws_subnet" "test_tf_VPC_Subnet_2a" {
+resource "aws_subnet" "test_tf_VPC_Subnet" {
   vpc_id                  = aws_vpc.test_tf_VPC.id
-  cidr_block              = var.subnetCIDRblock_2a
+  cidr_block              = var.subnetCIDRblock
   map_public_ip_on_launch = var.mapPublicIP
-  availability_zone       = var.availabilityZone_2a
-tags = {
-   Name = "My tf test VPC Subnet"
-}
-}
-resource "aws_subnet" "test_tf_VPC_Subnet_2b" {
-  vpc_id                  = aws_vpc.test_tf_VPC.id
-  cidr_block              = var.subnetCIDRblock_2b
-  map_public_ip_on_launch = var.mapPublicIP
-  availability_zone       = var.availabilityZone_2b
+  availability_zone       = var.availabilityZone
 tags = {
    Name = "My tf test VPC Subnet"
 }
@@ -55,7 +46,7 @@ tags = {
 }
 #Create the static network interface of instance
 resource "aws_network_interface" "test_tf_server_interface" {
-  subnet_id   = aws_subnet.test_tf_VPC_Subnet_2a.id
+  subnet_id   = aws_subnet.test_tf_VPC_Subnet.id
   private_ips = ["172.32.1.100"]
   security_groups = ["${aws_security_group.test_tf_VPC_Security_Group.id}"]
   tags = {
@@ -79,7 +70,7 @@ resource "aws_instance" "test_tf_server" {
 # create VPC Network access control list
 resource "aws_network_acl" "test_tf_VPC_Security_ACL" {
   vpc_id = aws_vpc.test_tf_VPC.id
-  subnet_ids = [ aws_subnet.test_tf_VPC_Subnet_2a.id ]
+  subnet_ids = [ aws_subnet.test_tf_VPC_Subnet.id ]
 # allow ingress port 22
   ingress {
     protocol   = "tcp"
@@ -194,8 +185,7 @@ resource "aws_route" "test_tf_VPC_internet_access" {
 } # end resource
 # Associate the Route Table with the Subnet
 resource "aws_route_table_association" "test_tf_VPC_association" {
-  subnet_id      = aws_subnet.test_tf_VPC_Subnet_2a.id
-  subnet_id      = aws_subnet.test_tf_VPC_Subnet_2b.id
+  subnet_id      = aws_subnet.test_tf_VPC_Subnet.id
   route_table_id = aws_route_table.test_tf_VPC_route_table.id
 } # end resource
 # end vpc.tf
@@ -210,11 +200,9 @@ resource "aws_route_table_association" "test_tf_VPC_association" {
 #variable "region" {
 #     default = "us-east-1"
 #}
-variable "availabilityZone_2a" {
-     default = "us-east-2a"
-}
-variable "availabilityZone_2b" {
-     default = "us-east-2b"
+variable "availabilityZone" {
+     type = "list"
+     default = ["us-east-2a","us-east-2b"]
 }
 variable "instanceTenancy" {
     default = "default"
@@ -228,11 +216,9 @@ variable "dnsHostNames" {
 variable "vpcCIDRblock" {
     default = "172.32.0.0/16"
 }
-variable "subnetCIDRblock_2a" {
-    default = "172.32.1.0/24"
-}
-variable "subnetCIDRblock_2b" {
-    default = "172.32.2.0/24"
+variable "subnetCIDRblock" {
+    type = "list"
+    default = ["172.32.1.0/24","172.32.2.0/24"]
 }
 variable "destinationCIDRblock" {
     default = "0.0.0.0/0"
