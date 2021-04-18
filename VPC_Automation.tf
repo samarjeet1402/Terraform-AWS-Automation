@@ -201,6 +201,7 @@ resource "aws_route_table_association" "test_tf_VPC_association" {
 #     default = "us-east-1"
 #}
 variable "availabilityZone" {
+     type = "list"
      default = [ "us-east-2a", "us-east-2b" ]
 }
 variable "instanceTenancy" {
@@ -216,6 +217,7 @@ variable "vpcCIDRblock" {
     default = "172.32.0.0/16"
 }
 variable "subnetCIDRblock" {
+    type = "list"
     default = [ "172.32.1.0/24", "172.32.2.0/24" ]
 }
 variable "destinationCIDRblock" {
