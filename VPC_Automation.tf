@@ -11,9 +11,9 @@ tags = {
 # create the Subnet
 resource "aws_subnet" "test_tf_VPC_Subnet" {
   vpc_id                  = aws_vpc.test_tf_VPC.id
-  cidr_block              = var.subnetCIDRblock
+  cidr_block              = var.subnetCIDRblock[count.index]
   map_public_ip_on_launch = var.mapPublicIP
-  availability_zone       = var.availabilityZone
+  availability_zone       = var.availabilityZone[count.index]
 tags = {
    Name = "My tf test VPC Subnet"
 }
