@@ -47,8 +47,9 @@ tags = {
 }
 #Create the static network interface of instance
 resource "aws_network_interface" "test_tf_server_interface" {
+  count       = length(var.subnetCIDRblock)
   subnet_id   = aws_subnet.test_tf_VPC_Subnet.id
-  private_ips = ["172.32.1.100"]
+  private_ips = ["172.32.1.100", "172.32.2.100"]
   security_groups = [aws_security_group.test_tf_VPC_Security_Group.id]
   tags = {
     Name = "primary_network_interface"
@@ -70,6 +71,7 @@ resource "aws_instance" "test_tf_server" {
 } # end resource
 # create VPC Network access control list
 resource "aws_network_acl" "test_tf_VPC_Security_ACL" {
+  count  = length(var.subnetCIDRblock)
   vpc_id = aws_vpc.test_tf_VPC.id
   subnet_ids = [ aws_subnet.test_tf_VPC_Subnet.id ]
 # allow ingress port 22
@@ -186,6 +188,7 @@ resource "aws_route" "test_tf_VPC_internet_access" {
 } # end resource
 # Associate the Route Table with the Subnet
 resource "aws_route_table_association" "test_tf_VPC_association" {
+  count          = length(var.subnetCIDRblock)
   subnet_id      = aws_subnet.test_tf_VPC_Subnet.id
   route_table_id = aws_route_table.test_tf_VPC_route_table.id
 } # end resource
