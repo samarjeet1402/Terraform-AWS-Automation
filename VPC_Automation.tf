@@ -10,10 +10,11 @@ tags = {
 } # end resource
 # create the Subnet
 resource "aws_subnet" "test_tf_VPC_Subnet" {
-  vpc_id                  = aws_vpc.test_tf_VPC.id
-  cidr_block              = "172.32.1.0/24" #var.subnetCIDRblock[count.index]
+  count                   = length(var.subnetCIDRblock)
+  vpc_id                  = aws_vpc.test_tf_VPC.id  
+  cidr_block              = var.subnetCIDRblock[count.index]
   map_public_ip_on_launch = var.mapPublicIP
-  availability_zone       = "us-east-2a" #var.availabilityZone[count.index]
+  availability_zone       = var.availabilityZone[count.index]
 tags = {
    Name = "My tf test VPC Subnet"
 }
@@ -200,10 +201,10 @@ resource "aws_route_table_association" "test_tf_VPC_association" {
 #variable "region" {
 #     default = "us-east-1"
 #}
-/*variable "availabilityZone" {
+variable "availabilityZone" {
      type = list
      default = [ "us-east-2a", "us-east-2b" ]
-}*/
+}
 variable "instanceTenancy" {
     default = "default"
 }
@@ -216,10 +217,10 @@ variable "dnsHostNames" {
 variable "vpcCIDRblock" {
     default = "172.32.0.0/16"
 }
-/*variable "subnetCIDRblock" {
+variable "subnetCIDRblock" {
     type = list
     default = [ "172.32.1.0/24", "172.32.2.0/24" ]
-}*/
+}
 variable "destinationCIDRblock" {
     default = "0.0.0.0/0"
 }
