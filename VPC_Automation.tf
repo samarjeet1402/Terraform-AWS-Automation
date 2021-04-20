@@ -55,7 +55,7 @@ resource "aws_network_interface" "test_tf_server_interface" {
     Name = "primary_network_interface"
   }
 }
-#Create the instance with static network interface
+/*#Create the instance with static network interface
 resource "aws_instance" "test_tf_server" {
   ami = "ami-083ebc5a49573896a" # us-east-1a
   instance_type = "t2.micro"
@@ -68,7 +68,7 @@ resource "aws_instance" "test_tf_server" {
     Name = "test_tf_server1"
   }
 
-} # end resource
+} # end resource*/
 # create VPC Network access control list
 resource "aws_network_acl" "test_tf_VPC_Security_ACL" {
   count  = length(var.subnetCIDRblock)
