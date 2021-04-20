@@ -48,7 +48,7 @@ tags = {
 #Create the static network interface of instance
 resource "aws_network_interface" "test_tf_server_interface" {
   count       = length(var.subnetCIDRblock)
-  subnet_id   = aws_subnet.test_tf_VPC_Subnet[count.index]
+  subnet_id   = aws_subnet.test_tf_VPC_Subnet [count.index]
   private_ips = ["172.32.1.100", "172.32.2.100"]
   security_groups = [aws_security_group.test_tf_VPC_Security_Group.id]
   tags = {
