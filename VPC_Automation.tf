@@ -61,7 +61,7 @@ resource "aws_instance" "test_tf_server" {
   instance_type = "t2.micro"
   key_name   = "test_key"
   network_interface {
-  network_interface_id = aws_network_interface.test_tf_server_interface.id
+  network_interface_id = aws_network_interface.test_tf_server_interface [count.index]
   device_index         = 0
   }
   tags = {
