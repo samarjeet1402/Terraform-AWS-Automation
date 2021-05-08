@@ -188,7 +188,6 @@ resource "aws_route" "test_tf_VPC_internet_access" {
 } # end resource
 # Associate the Route Table with the Subnet
 resource "aws_route_table_association" "test_tf_VPC_association" {
-  count          = length(var.subnetCIDRblock)
   subnet_id      = aws_subnet.test_tf_VPC_Subnet[count.index]
   route_table_id = aws_route_table.test_tf_VPC_route_table.id
 } # end resource
